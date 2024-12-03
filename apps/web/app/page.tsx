@@ -1,102 +1,182 @@
-import Image, { type ImageProps } from "next/image";
-import { Button } from "@repo/ui/button";
-import styles from "./page.module.css";
+import Image from 'next/image'
+import { Button } from "@/components/ui/button"
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-type Props = Omit<ImageProps, "src"> & {
-  srcLight: string;
-  srcDark: string;
-};
-
-const ThemeImage = (props: Props) => {
-  const { srcLight, srcDark, ...rest } = props;
-
+export default function ChessLandingPage() {
   return (
-    <>
-      <Image {...rest} src={srcLight} className="imgLight" />
-      <Image {...rest} src={srcDark} className="imgDark" />
-    </>
-  );
-};
-
-export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <ThemeImage
-          className={styles.logo}
-          srcLight="turborepo-dark.svg"
-          srcDark="turborepo-light.svg"
-          alt="Turborepo logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>apps/web/app/page.tsx</code>
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new/clone?demo-description=Learn+to+implement+a+monorepo+with+a+two+Next.js+sites+that+has+installed+three+local+packages.&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F4K8ZISWAzJ8X1504ca0zmC%2F0b21a1c6246add355e55816278ef54bc%2FBasic.png&demo-title=Monorepo+with+Turborepo&demo-url=https%3A%2F%2Fexamples-basic-web.vercel.sh%2F&from=templates&project-name=Monorepo+with+Turborepo&repository-name=monorepo-turborepo&repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fturborepo%2Ftree%2Fmain%2Fexamples%2Fbasic&root-directory=apps%2Fdocs&skippable-integrations=1&teamSlug=vercel&utm_source=create-turbo"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://turbo.build/repo/docs?utm_source"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+    <div className="min-h-screen bg-[#1e1e1e] text-white">
+      {/* Hero Section */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 grid grid-cols-8 grid-rows-8 opacity-10">
+          {[...Array(64)].map((_, i) => (
+            <div key={i} className={`${(i + Math.floor(i / 8)) % 2 === 0 ? 'bg-white' : 'bg-black'}`} />
+          ))}
         </div>
-        <Button appName="web" className={styles.secondary}>
-          Open alert
+        <div className="relative z-10 text-center">
+          <h1 className="text-6xl font-bold mb-4">Master the Game</h1>
+          <p className="text-xl mb-8">Elevate your chess skills with our cutting-edge platform</p>
+          <Button size="lg" className="bg-[#f0d9b5] text-black hover:bg-[#b58863]">
+            Start Playing Now
+          </Button>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-20 px-4">
+        <h2 className="text-4xl font-bold text-center mb-12">Why Choose Our Platform?</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {[
+            { title: "Advanced AI Opponent", description: "Challenge yourself against our state-of-the-art AI", icon: "♔" },
+            { title: "Live Tournaments", description: "Compete in real-time tournaments with players worldwide", icon: "♕" },
+            { title: "Interactive Lessons", description: "Learn from grandmasters with our interactive video lessons", icon: "♖" },
+          ].map((feature, index) => (
+            <Card key={index} className="bg-[#2a2a2a] border-none">
+              <CardHeader>
+                <div className="text-4xl mb-2">{feature.icon}</div>
+                <CardTitle className="text-xl">{feature.title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p>{feature.description}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 px-4 bg-[#2a2a2a]">
+        <h2 className="text-4xl font-bold text-center mb-12">What Our Players Say</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          {[
+            { name: "Alice", rating: "2200", quote: "This platform has revolutionized my chess game!" },
+            { name: "Bob", rating: "1800", quote: "The interactive lessons are incredibly helpful." },
+            { name: "Charlie", rating: "2400", quote: "I love the competitive atmosphere in the tournaments." },
+            { name: "Diana", rating: "2000", quote: "The AI opponent provides a real challenge every time." },
+          ].map((testimonial, index) => (
+            <div key={index} className={`p-6 ${index % 2 === 0 ? 'bg-[#f0d9b5]' : 'bg-[#b58863]'} text-black`}>
+              <p className="mb-4 italic">"{testimonial.quote}"</p>
+              <p className="font-bold">{testimonial.name} - Rating: {testimonial.rating}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section className="py-20 px-4 bg-[#2a2a2a]">
+        <h2 className="text-4xl font-bold text-center mb-12">How It Works</h2>
+        <div className="max-w-4xl mx-auto">
+          <Tabs defaultValue="step1" className="w-full">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="step1">Step 1</TabsTrigger>
+              <TabsTrigger value="step2">Step 2</TabsTrigger>
+              <TabsTrigger value="step3">Step 3</TabsTrigger>
+            </TabsList>
+            <TabsContent value="step1" className="mt-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Create Your Account</CardTitle>
+                  <CardDescription>Join our chess community in minutes</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p>Sign up for free and set up your profile. Choose your preferred settings and get ready to play.</p>
+                </CardContent>
+              </Card>
+            </TabsContent>
+            <TabsContent value="step2" className="mt-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Choose Your Opponent</CardTitle>
+                  <CardDescription>Play against AI or real players</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p>Select your preferred game mode. Challenge our AI at various difficulty levels or match with players from around the world.</p>
+                </CardContent>
+              </Card>
+            </TabsContent>
+            <TabsContent value="step3" className="mt-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Improve Your Skills</CardTitle>
+                  <CardDescription>Learn and grow with every game</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p>Analyze your games, take interactive lessons, and track your progress. Watch your chess rating soar as you become a better player.</p>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
+      </section>
+
+      {/* Pricing Section */}
+      <section className="py-20 px-4">
+        <h2 className="text-4xl font-bold text-center mb-12">Choose Your Plan</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {[
+            { title: "Pawn", price: "$9.99", features: ["Basic AI opponent", "5 tournaments/month", "10 video lessons"] },
+            { title: "Knight", price: "$19.99", features: ["Advanced AI opponent", "Unlimited tournaments", "50 video lessons", "Personal coach"] },
+            { title: "Queen", price: "$29.99", features: ["Grandmaster AI opponent", "Unlimited tournaments", "All video lessons", "1-on-1 coaching", "Exclusive events"] },
+          ].map((plan, index) => (
+            <Card key={index} className={`${index === 1 ? 'border-[#f0d9b5]' : 'border-[#b58863]'} border-2`}>
+              <CardHeader>
+                <CardTitle className="text-2xl">{plan.title}</CardTitle>
+                <CardDescription className="text-3xl font-bold">{plan.price}/month</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ul className="list-disc list-inside">
+                  {plan.features.map((feature, i) => (
+                    <li key={i}>{feature}</li>
+                  ))}
+                </ul>
+              </CardContent>
+              <CardFooter>
+                <Button className="w-full bg-[#f0d9b5] text-black hover:bg-[#b58863]">Choose Plan</Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* Featured Games Section */}
+      <section className="py-20 px-4">
+        <h2 className="text-4xl font-bold text-center mb-12">Featured Games</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          {[
+            { title: "The Immortal Game", players: "Anderssen vs Kieseritzky", year: 1851 },
+            { title: "Opera Game", players: "Morphy vs Duke of Brunswick and Count Isouard", year: 1858 },
+            { title: "Game of the Century", players: "Donald Byrne vs 13-year-old Bobby Fischer", year: 1956 },
+          ].map((game, index) => (
+            <Card key={index} className="bg-[#2a2a2a] border-none">
+              <CardHeader>
+                <CardTitle>{game.title}</CardTitle>
+                <CardDescription>{game.players}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p>Year: {game.year}</p>
+              </CardContent>
+              <CardFooter>
+                <Button variant="outline" className="w-full">Study Game</Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      {/* Call to Action */}
+      <section className="py-20 px-4 bg-[#2a2a2a] text-center">
+        <h2 className="text-4xl font-bold mb-4">Ready to Become a Chess Master?</h2>
+        <p className="text-xl mb-8">Join our platform today and take your game to the next level!</p>
+        <Button size="lg" className="bg-[#f0d9b5] text-black hover:bg-[#b58863]">
+          Sign Up Now
         </Button>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com/templates?search=turborepo&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://turbo.build?utm_source=create-turbo"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to turbo.build →
-        </a>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-8 px-4 text-center">
+        <p>&copy; 2023 Chess Master Platform. All rights reserved.</p>
       </footer>
     </div>
-  );
+  )
 }
+
