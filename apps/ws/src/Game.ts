@@ -1,5 +1,5 @@
 import {Chess, Move, Square} from "chess.js"
-import { INIT_GAME, MOVE } from "./messages"
+import { GAME_ENDED, INIT_GAME, MOVE } from "./messages"
 import { SocketManger, User } from "./SocketManger";
 
 type GAME_RESULT = "white_wins" | "black_wins" | "draw";
@@ -149,7 +149,24 @@ export class Game{
         }
         this.movesCount++;
     }
-    endGame = async(status : GAME_) =>{
-
+    endGame = async(status : GAME_STATUS,result : GAME_RESULT) =>{
+        SocketManger.getIntance().broadCast(
+            this.gameId,
+            JSON.stringify({
+                type : GAME_ENDED,
+                payload:{
+                    result,
+                    status,
+                    // move : should put the moves for that game from the db or redis
+                    blackPlayer:{
+                        id : this.player2Id,
+                        // name : get from the db
+                    },
+                    whitePlayer: {
+                        id : this.player1Id
+                    }
+                }
+            })
+        )
     }
 }
